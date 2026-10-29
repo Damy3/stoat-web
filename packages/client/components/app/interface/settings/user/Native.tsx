@@ -13,6 +13,7 @@ declare type DesktopConfig = {
   spellchecker: boolean;
   hardwareAcceleration: boolean;
   discordRpc: boolean;
+  microphoneMuteShortcut: string;
   windowState: {
     isMaximised: boolean;
   };
@@ -42,6 +43,8 @@ declare global {
       ): void;
       screenPickerCallback(idx: number, audio: boolean): void;
       isWayland?(): boolean;
+      getMicMuteShortcut(): Promise<string>;
+      setMicMuteShortcut(accelerator: string): Promise<string>;
     };
 
     desktopConfig: {
@@ -88,8 +91,9 @@ export default function Native() {
       set({ hardwareAcceleration: !config().hardwareAcceleration }),
   };
 
-  function CheckboxButton<K extends keyof Omit<DesktopConfig, "windowState">>(
-    key: K,
+  function CheckboxButton<
+    K extends keyof Omit<DesktopConfig, "windowState" | "microphoneMuteShortcut">,
+  >(key: K,
     icon: string,
     label: string,
     description: string,

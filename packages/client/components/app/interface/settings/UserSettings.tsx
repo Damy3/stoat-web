@@ -38,6 +38,7 @@ import { MyBots, ViewBot } from "./user/bots";
 import { Feedback } from "./user/Feedback";
 import { LanguageSettings } from "./user/Language";
 import Native from "./user/Native";
+import Shortcuts from "./user/Shortcuts";
 import Notifications from "./user/notifications/Notifications";
 import { EditProfile } from "./user/profile";
 import { Sessions } from "./user/Sessions";
@@ -96,7 +97,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <EditSubscription />;
       case "native":
         return <Native />;
-      case "voice":
+      case "shortcuts":
+        return <Shortcuts />;      case "voice":
         return <VoiceSettings />;
       case "notifications":
         return <Notifications isDesktop={!!window.native} />;
@@ -308,6 +310,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               hidden: !window.native,
               icon: <Symbol size={20}>desktop_windows</Symbol>,
               title: <Trans>Desktop</Trans>,
+            },
+            {
+              id: "shortcuts",
+              hidden: !window.native,
+              icon: <Symbol size={20}>keyboard</Symbol>,
+              title: <Trans>Shortcuts</Trans>,
             },
             // {
             //   id: "experiments",
