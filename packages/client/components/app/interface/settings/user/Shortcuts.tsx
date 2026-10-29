@@ -22,9 +22,7 @@ declare global {
 export default function Shortcuts() {
   const { t } = useLingui();
   const [config, setConfig] = createSignal<DesktopConfig>({
-    microphoneMuteShortcut: window.native.getMicMuteShortcut
-      ? ""
-      : "",
+    microphoneMuteShortcut: "",
   });
 
   onMount(async () => {
@@ -62,60 +60,60 @@ export default function Shortcuts() {
       {capturing() && (
         <Portal>
           <div
-          style={{
-            position: "fixed",
-            inset: "0",
-            background: "rgba(0,0,0,0.6)",
-            display: "flex",
-            "align-items": "center",
-            "justify-content": "center",
-            "z-index": "99999",
-          }}
-        >
-          <div
             style={{
-              background: "var(--md-sys-color-surface-container-high)",
-              color: "var(--md-sys-color-on-surface)",
-              padding: "24px",
-              "border-radius": "12px",
-              "min-width": "320px",
+              position: "fixed",
+              inset: "0",
+              background: "rgba(0,0,0,0.6)",
               display: "flex",
-              "flex-direction": "column",
-              gap: "12px",
-              "box-shadow": "0 8px 24px rgba(0,0,0,0.25)",
+              "align-items": "center",
+              "justify-content": "center",
+              "z-index": "99999",
             }}
           >
-            <p>{t`Press the desired key combination...`}</p>
-            <input
-              type="text"
-              readOnly
-              value={pending() || t`Waiting for input...`}
+            <div
               style={{
-                width: "100%",
-                background: "var(--md-sys-color-surface-container)",
+                background: "var(--md-sys-color-surface-container-high)",
                 color: "var(--md-sys-color-on-surface)",
-                border: "1px solid var(--md-sys-color-outline)",
-                "border-radius": "6px",
-                padding: "8px",
+                padding: "24px",
+                "border-radius": "12px",
+                "min-width": "320px",
+                display: "flex",
+                "flex-direction": "column",
+                gap: "12px",
+                "box-shadow": "0 8px 24px rgba(0,0,0,0.25)",
               }}
-            />
-            <div style={{ display: "flex", gap: "8px", "justify-content": "flex-end" }}>
-              <button onClick={() => setCapturing(false)}>{t`Cancel`}</button>
-              {pending() && (
-                <button
-                  onClick={async () => {
-                    const saved = await window.native.setMicMuteShortcut(pending());
-                    setConfig({ microphoneMuteShortcut: saved });
-                    setPending("");
-                    setCapturing(false);
-                  }}
-                >
-                  {t`Save`}
-                </button>
-              )}
+            >
+              <p>{t`Press the desired key combination...`}</p>
+              <input
+                type="text"
+                readOnly
+                value={pending() || t`Waiting for input...`}
+                style={{
+                  width: "100%",
+                  background: "var(--md-sys-color-surface-container)",
+                  color: "var(--md-sys-color-on-surface)",
+                  border: "1px solid var(--md-sys-color-outline)",
+                  "border-radius": "6px",
+                  padding: "8px",
+                }}
+              />
+              <div style={{ display: "flex", gap: "8px", "justify-content": "flex-end" }}>
+                <button onClick={() => setCapturing(false)}>{t`Cancel`}</button>
+                {pending() && (
+                  <button
+                    onClick={async () => {
+                      const saved = await window.native.setMicMuteShortcut(pending());
+                      setConfig({ microphoneMuteShortcut: saved });
+                      setPending("");
+                      setCapturing(false);
+                    }}
+                  >
+                    {t`Save`}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-        </div>
         </Portal>
       )}
       <Column gap="lg">
